@@ -1,0 +1,32 @@
+notes:
+  - CUDA kernels execute in parallel using threads organized into blocks.
+  - threadIdx.x is a built-in variable providing the unique index of a thread within its block.
+  - The grid and block dimensions are specified using <<< >>> syntax.
+  - index often directly uses threadIdx.x to access array elements.
+
+hints:
+  - threadIdx.x, blockIdx.x, blockDim.x are crucial for thread indexing.
+  - Shared memory can optimize data sharing within a block.
+  - Optimize thread block size and grid dimensions for performance.
+
+extra_information:
+  example:
+    - For a grid with 1 block and 5 threads per block:
+      - Thread | threadIdx.x | index
+        ------- | ----------- | -----
+        0       | 0          | 0
+        1       | 1          | 1
+        2       | 2          | 2
+        3       | 3          | 3
+        4       | 4          | 4
+  purpose:
+    - Each thread processes a different array element based on its index.
+    - Parallel computation improves performance for large datasets.
+  execution_example:
+    language: c
+    code: |
+      __global__ void add(int *a, int *b, int *c) {
+          int index = threadIdx.x;
+          c[index] = a[index] + b[index];
+      }
+    description: This kernel performs element-wise addition of arrays a and b, storing the result in c. Each thread handles one element.
